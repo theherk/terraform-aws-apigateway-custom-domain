@@ -1,0 +1,33 @@
+locals {
+  // Canonical list of NLB zone id's by region.
+  nlb_region_zone_id = {
+    "af-south-1"     = "Z203XCE67M25HM",
+    "ap-east-1"      = "Z12Y7K3UBGUAD1",
+    "ap-northeast-1" = "Z31USIVHYNEOWT",
+    "ap-northeast-2" = "ZIBE1TIR4HY56",
+    "ap-northeast-3" = "Z1GWIQ4HH19I5X",
+    "ap-south-1"     = "ZVDDRBQ08TROA",
+    "ap-southeast-1" = "ZKVM4W9LS7TM",
+    "ap-southeast-2" = "ZCT6FZBF4DROD",
+    "ap-southeast-3" = "Z01971771FYVNCOVWJU1G",
+    "ca-central-1"   = "Z2EPGBW3API2WT",
+    "cn-north-1"     = "Z3QFB96KMJ7ED6",
+    "cn-northwest-1" = "ZQEIKTCZ8352D",
+    "eu-central-1"   = "Z3F0SRJ5LGBH90",
+    "eu-central-2"   = "Z02239872DOALSIDCX66S",
+    "eu-north-1"     = "Z1UDT6IFJ4EJM",
+    "eu-south-1"     = "Z23146JA1KNAFP",
+    "eu-west-1"      = "Z2IFOLAFXWLO4F",
+    "eu-west-2"      = "ZD4D7Y8KGAS4G",
+    "eu-west-3"      = "Z1CMS0P5QUZ6D5",
+    "me-central-1"   = "Z00282643NTTLPANJJG2P",
+    "me-south-1"     = "Z3QSRYVP46NYYV",
+    "sa-east-1"      = "ZTK26PT1VY4CU",
+    "us-east-1"      = "Z26RNL4JYFTOTI",
+    "us-east-2"      = "ZLMOA37VPKANP",
+    "us-gov-east-1"  = "Z1ZSMQQ6Q24QQ8",
+    "us-gov-west-1"  = "ZMG1MZ2THAWF1",
+    "us-west-1"      = "Z24FKFUX50B4VW",
+    "us-west-2"      = "Z18D5FSROUN65G",
+  }
+}
