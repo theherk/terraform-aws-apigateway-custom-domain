@@ -103,5 +103,5 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_vpc_endpoint_service"></a> [vpc\_endpoint\_service](#output\_vpc\_endpoint\_service) | VPC Endpoint Service toward load balancer is `var.vpc_endpoint_service = true`. |
+| <a name="output_vpc_endpoint_service"></a> [vpc\_endpoint\_service](#output\_vpc\_endpoint\_service) | VPC Endpoint Service toward load balancer. This can be used to generate a VPC Endpoint Interface in another connectivity account. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
