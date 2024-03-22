@@ -116,7 +116,7 @@ resource "aws_route53_record" "this" {
   type    = "A"
 
   alias {
-    name                   = coalesce(var.vpc_endpoint_remote, aws_vpc_endpoint_service.this.private_dns_name)
+    name                   = coalesce(var.vpc_endpoint_remote, tolist(aws_vpc_endpoint_service.this.base_endpoint_dns_names)[0])
     zone_id                = local.nlb_region_zone_id[data.aws_region.current.name]
     evaluate_target_health = true
   }
