@@ -6,7 +6,7 @@ data "aws_subnet" "this" {
 }
 
 resource "aws_security_group" "api_endpoint" {
-  count = var.vpc_endpoint_api == null ? 1 : 0
+  count = var.vpc_endpoint_api == null || var.vpc_endpoint_remote == null ? 1 : 0
 
   description = "Security group for ${var.name} vpc endpoints."
   name        = var.name
@@ -110,13 +110,24 @@ resource "aws_vpc_endpoint_service" "this" {
   tags                       = { Name = var.name }
 }
 
+resource "aws_vpc_endpoint" "local" {
+  count = var.vpc_endpoint_remote == null ? 1 : 0
+
+  security_group_ids = [aws_security_group.api_endpoint[0].id]
+  service_name       = aws_vpc_endpoint_service.this.service_name
+  subnet_ids         = var.subnet_ids
+  tags               = { Name = var.name }
+  vpc_endpoint_type  = "Interface"
+  vpc_id             = var.vpc_id
+}
+
 resource "aws_route53_record" "this" {
   zone_id = var.zone_id
   name    = var.domain_name
   type    = "A"
 
   alias {
-    name                   = coalesce(var.vpc_endpoint_remote, tolist(aws_vpc_endpoint_service.this.base_endpoint_dns_names)[0])
+    name                   = coalesce(var.vpc_endpoint_remote, aws_vpc_endpoint.local[0].dns_entry[0].dns_name)
     zone_id                = local.vpc_region_zone_id[data.aws_region.current.name]
     evaluate_target_health = true
   }

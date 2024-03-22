@@ -4,7 +4,7 @@ This is intended to simplify the process of providing access to AWS API Gateway 
 
 In addition, it provides an extra VPC Endpoint Service in the account so that the CNAME does not point directly to the load balancers which have IP addresses that are subject to change.
 
-An implementer may also provide `vpc_endpoint_remote` that is the DNS of a VPC Endpoint created in another connectivity account. That would cause the DNS alias to point to that interface rather than the service created by this module.
+An implementer may also provide `vpc_endpoint_remote` that is the DNS of a VPC Endpoint created in another connectivity account. That would cause the DNS alias to point to that interface rather than the local interface created by this module.
 
 ## Usage
 
@@ -75,6 +75,7 @@ No modules.
 | [aws_route53_record.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_security_group.api_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_vpc_endpoint.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.local](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint_service.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint_service) | resource |
 | [aws_network_interface.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/network_interface) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
