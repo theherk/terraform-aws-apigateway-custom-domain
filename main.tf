@@ -105,16 +105,18 @@ resource "aws_lb_target_group_attachment" "this" {
 
 resource "aws_vpc_endpoint_service" "this" {
   # checkov:skip=CKV_AWS_123: Prefer no acceptance.
+  count = var.vpc_endpoint_remote != null || var.vpc_endpoint_local ? 1 : 0
+
   acceptance_required        = false
   network_load_balancer_arns = [aws_lb.this.arn]
   tags                       = { Name = var.name }
 }
 
 resource "aws_vpc_endpoint" "local" {
-  count = var.vpc_endpoint_remote == null ? 1 : 0
+  count = var.vpc_endpoint_remote == null && var.vpc_endpoint_local ? 1 : 0
 
   security_group_ids = [aws_security_group.api_endpoint[0].id]
-  service_name       = aws_vpc_endpoint_service.this.service_name
+  service_name       = aws_vpc_endpoint_service.this[0].service_name
   subnet_ids         = var.subnet_ids
   tags               = { Name = var.name }
   vpc_endpoint_type  = "Interface"
@@ -127,8 +129,8 @@ resource "aws_route53_record" "this" {
   type    = "A"
 
   alias {
-    name                   = coalesce(var.vpc_endpoint_remote, aws_vpc_endpoint.local[0].dns_entry[0].dns_name)
-    zone_id                = local.vpc_region_zone_id[data.aws_region.current.name]
+    name                   = coalesce(var.vpc_endpoint_remote, try(aws_vpc_endpoint.local[0].dns_entry[0].dns_name, null), aws_lb.this.dns_name)
+    zone_id                = var.vpc_endpoint_remote != null || var.vpc_endpoint_local ? local.vpc_region_zone_id[data.aws_region.current.name] : aws_lb.this.zone_id
     evaluate_target_health = true
   }
 }

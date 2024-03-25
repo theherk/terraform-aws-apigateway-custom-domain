@@ -52,6 +52,12 @@ variable "vpc_endpoint_api" {
   default     = null
 }
 
+variable "vpc_endpoint_local" {
+  description = "Boolean indicating is a VPC Endpoint Interface should be created in the account with the API. If `false` and no `vpc_endpoint_remote` given, the DNS record will point directly to the NLB. This will be slightly less expensive, but it works. However, if you have any intention of using an IP allow list to allow traffic through a firewall, this may not be a good option since the IP addresses of NLB's can change unexpectedly. Ignored if `vpc_endpoint_remote` given."
+  type        = bool
+  default     = false
+}
+
 variable "vpc_endpoint_remote" {
   description = "VPC Endpoint in another connectivity account for calling the VPC Endpoint Service created in the API's account. If not provided, a second VPC Endpoint will be created in the API's account to point toward the VPC Endpoint Service which reaches the NLB. When added, the endpoint created in this account to reach the service will be removed."
   type        = string
