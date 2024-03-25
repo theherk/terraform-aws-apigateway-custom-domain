@@ -69,7 +69,7 @@ module "this" {
   name                = "h4s-test"
   subnet_ids          = module.network.private_subnets[*].id
   vpc_endpoint_api    = module.network.vpc_endpoint.api.id
-  vpc_endpoint_remove = "url-of-endpoint-created-in-connectivity-account"
+  vpc_endpoint_remote = "url-of-endpoint-created-in-connectivity-account"
   vpc_id              = module.network.vpc_id
   zone_id             = module.network.zones.internal.id
 }
