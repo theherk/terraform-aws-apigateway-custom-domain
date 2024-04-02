@@ -1,3 +1,9 @@
+variable "allowed_principals" {
+  description = "Principals allowed to discover the VPC Endpoint Service. By default, principals outside the VPC will not be able to create interfaces to the Endpoint Service."
+  type        = list(string)
+  default     = null
+}
+
 variable "api_id" {
   description = "API to which the requests are destined."
   type        = string

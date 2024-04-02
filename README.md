@@ -137,6 +137,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_allowed_principals"></a> [allowed\_principals](#input\_allowed\_principals) | Principals allowed to discover the VPC Endpoint Service. By default, principals outside the VPC will not be able to create interfaces to the Endpoint Service. | `list(string)` | `null` | no |
 | <a name="input_api_id"></a> [api\_id](#input\_api\_id) | API to which the requests are destined. | `string` | n/a | yes |
 | <a name="input_api_stage"></a> [api\_stage](#input\_api\_stage) | Name of the stage used for the base path mapping. | `string` | n/a | yes |
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | ACM certificate to attach to the listener. | `string` | n/a | yes |

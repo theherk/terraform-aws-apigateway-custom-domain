@@ -108,6 +108,7 @@ resource "aws_vpc_endpoint_service" "this" {
   count = var.vpc_endpoint_remote != null || var.vpc_endpoint_local ? 1 : 0
 
   acceptance_required        = false
+  allowed_principals         = var.allowed_principals
   network_load_balancer_arns = [aws_lb.this.arn]
   tags                       = { Name = var.name }
 }
