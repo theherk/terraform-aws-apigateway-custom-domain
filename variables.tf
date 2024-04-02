@@ -53,9 +53,12 @@ variable "subnet_ids" {
 }
 
 variable "vpc_endpoint_api" {
-  description = "VPC Endpoint for execute-api. If not given, one will be created."
-  type        = string
+  description = "VPC Endpoint for execute-api. If not given, one will be created. Given as an object, to avoid unknown until apply-time errors for variable data."
   default     = null
+
+  type = object({
+    id = string
+  })
 }
 
 variable "vpc_endpoint_local" {

@@ -31,7 +31,7 @@ resource "aws_security_group" "api_endpoint" {
 data "aws_vpc_endpoint" "api" {
   count = var.vpc_endpoint_api != null ? 1 : 0
 
-  id = var.vpc_endpoint_api
+  id = var.vpc_endpoint_api.id
 }
 
 resource "aws_vpc_endpoint" "api" {
@@ -90,9 +90,16 @@ resource "aws_lb_target_group" "this" {
 }
 
 data "aws_network_interface" "this" {
-  for_each = var.vpc_endpoint_api == null ? aws_vpc_endpoint.api[0].network_interface_ids : data.aws_vpc_endpoint.api[0].network_interface_ids
+  # This looks crazy because of the unknown until apply-time issue.
+  # But since sets of strings are sorted lexicographically, this should be
+  # stable.
+  for_each = ({ for i, v in range(length(var.subnet_ids)) : i =>
+    var.vpc_endpoint_api == null
+    ? tolist(aws_vpc_endpoint.api[0].network_interface_ids)[i]
+    : tolist(data.aws_vpc_endpoint.api[0].network_interface_ids)[i]
+  })
 
-  id = each.key
+  id = each.value
 }
 
 resource "aws_lb_target_group_attachment" "this" {
