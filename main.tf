@@ -132,14 +132,77 @@ resource "aws_vpc_endpoint" "local" {
 }
 
 resource "aws_route53_record" "this" {
-  zone_id = var.zone_id
-  name    = var.domain_name
-  type    = "A"
+  zone_id        = var.zone_id
+  name           = var.domain_name
+  set_identifier = try(var.routing_policy.set_identifier, null)
+  type           = "A"
 
   alias {
     name                   = coalesce(var.vpc_endpoint_remote, try(aws_vpc_endpoint.local[0].dns_entry[0].dns_name, null), aws_lb.this.dns_name)
     zone_id                = var.vpc_endpoint_remote != null || var.vpc_endpoint_local ? local.vpc_region_zone_id[data.aws_region.current.name] : aws_lb.this.zone_id
     evaluate_target_health = true
+  }
+
+  dynamic "cidr_routing_policy" {
+    for_each = var.routing_policy.cidr != null ? [var.routing_policy.cidr] : []
+
+    content {
+      collection_id = cidr_routing_policy.value.collection_id
+      location_name = cidr_routing_policy.value.location_name
+    }
+  }
+
+  dynamic "failover_routing_policy" {
+    for_each = var.routing_policy.failover != null ? [var.routing_policy.failover] : []
+
+    content {
+      type = failover_routing_policy.value.type
+    }
+  }
+
+  dynamic "geolocation_routing_policy" {
+    for_each = var.routing_policy.geolocation != null ? [var.routing_policy.geolocation] : []
+
+    content {
+      continent   = geolocation_routing_policy.value.continent
+      country     = geolocation_routing_policy.value.country
+      subdivision = geolocation_routing_policy.value.subdivision
+    }
+  }
+
+  dynamic "geoproximity_routing_policy" {
+    for_each = var.routing_policy.geoproximity != null ? [var.routing_policy.geoproximity] : []
+
+    content {
+      aws_region       = geoproximity_routing_policy.value.aws_region
+      bias             = geoproximity_routing_policy.value.bias
+      local_zone_group = geoproximity_routing_policy.value.local_zone_group
+
+      dynamic "coordinates" {
+        for_each = geoproximity_routing_policy.value.coordinates != null ? [geoproximity_routing_policy.value.coordinates] : []
+
+        content {
+          latitude  = coordinates.value.latitude
+          longitude = coordinates.value.longitude
+        }
+      }
+    }
+  }
+
+  dynamic "latency_routing_policy" {
+    for_each = var.routing_policy.latency != null ? [var.routing_policy.latency] : []
+
+    content {
+      region = latency_routing_policy.value.region
+    }
+  }
+
+  dynamic "weighted_routing_policy" {
+    for_each = var.routing_policy.weighted != null ? [var.routing_policy.weighted] : []
+
+    content {
+      weight = weighted_routing_policy.value.weight
+    }
   }
 }
 

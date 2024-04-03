@@ -47,6 +47,49 @@ variable "name" {
   type        = string
 }
 
+variable "routing_policy" {
+  description = "Routing policy applied to the alias A record. This can be useful if you intend to failover to an alternate API. It is not required, and when not given, a simple routing policy will be used."
+  default     = null
+
+  type = object({
+    set_identifier = string
+
+    cidr = optional(object({
+      collection_id = string
+      location_name = string
+    }))
+
+    failover = optional(object({
+      type = string
+    }))
+
+    geolocation = optional(object({
+      continent   = string
+      country     = string
+      subdivision = optional(string)
+    }))
+
+    geoproximity = optional(object({
+      aws_region       = optional(string)
+      bias             = optional(string)
+      local_zone_group = optional(string)
+
+      coordinates = optional(object({
+        latitude  = string
+        longitude = string
+      }))
+    }))
+
+    latency = optional(object({
+      region = string
+    }))
+
+    weighted = optional(object({
+      weight = number
+    }))
+  })
+}
+
 variable "subnet_ids" {
   description = "Subnets for the target group."
   type        = list(string)
