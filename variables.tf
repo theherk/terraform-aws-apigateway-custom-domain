@@ -90,6 +90,12 @@ variable "routing_policy" {
   })
 }
 
+variable "skip_apigateway_domains" {
+  description = "Boolean indicating if the creation of `aws_api_gateway_domain_name` and `aws_api_gateway_base_path_mapping` should be skipped. This can be useful if it is already created by another instance of this module. For instance, if one is using multiple custom domain entries to route differently internally to the local VPC. Generally this is not needed."
+  default     = false
+  type        = bool
+}
+
 variable "subnet_ids" {
   description = "Subnets for the target group."
   type        = list(string)

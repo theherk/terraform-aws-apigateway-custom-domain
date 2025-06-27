@@ -1,3 +1,7 @@
+locals {
+  apigateway_domains = var.skip_apigateway_domains ? [] : toset(concat(try([coalesce(var.domain_name)], []), var.domain_names_alternate))
+}
+
 data "aws_region" "current" {}
 
 data "aws_subnet" "this" {
@@ -207,7 +211,7 @@ resource "aws_route53_record" "this" {
 }
 
 resource "aws_api_gateway_domain_name" "this" {
-  for_each = toset(concat(try([coalesce(var.domain_name)], []), var.domain_names_alternate))
+  for_each = local.apigateway_domains
 
   domain_name              = each.key
   regional_certificate_arn = var.certificate_arn
@@ -219,7 +223,7 @@ resource "aws_api_gateway_domain_name" "this" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "this" {
-  for_each = toset(concat(try([coalesce(var.domain_name)], []), var.domain_names_alternate))
+  for_each = local.apigateway_domains
 
   api_id      = var.api_id
   stage_name  = var.api_stage
