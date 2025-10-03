@@ -43,7 +43,7 @@ resource "aws_vpc_endpoint" "api" {
 
   private_dns_enabled = true
   security_group_ids  = [aws_security_group.api_endpoint[0].id]
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.execute-api"
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.execute-api"
   subnet_ids          = var.subnet_ids
   tags                = { Name = var.name }
   vpc_endpoint_type   = "Interface"
@@ -143,7 +143,7 @@ resource "aws_route53_record" "this" {
 
   alias {
     name                   = coalesce(var.vpc_endpoint_remote, try(aws_vpc_endpoint.local[0].dns_entry[0].dns_name, null), aws_lb.this.dns_name)
-    zone_id                = var.vpc_endpoint_remote != null || var.vpc_endpoint_local ? local.vpc_region_zone_id[data.aws_region.current.name] : aws_lb.this.zone_id
+    zone_id                = var.vpc_endpoint_remote != null || var.vpc_endpoint_local ? local.vpc_region_zone_id[data.aws_region.current.region] : aws_lb.this.zone_id
     evaluate_target_health = true
   }
 
