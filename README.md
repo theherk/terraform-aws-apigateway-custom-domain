@@ -55,7 +55,7 @@ _ref_: [Sequence Diagram](#alias-to-vpc-endpoint-in-api-account-sequence)
 
 ### Alias to VPC Endpoint in Connectivity Account
 
-In situations where your private network connections ingress from another account, assuming your have a TGW route covering both VPC's, you can first use `vpc_endpoint_local`. That will create the infrastructure above, but gives as an output `vpc_endpoint_service`. You can then use that to create a VPC Endpoint Interface in your connectivity account that targets the created `vpc_endpoint_service`. Giving this service back as `vpc_endpoint_service_remote`, will remove the local VPC Endpoint Interface and point the DNS record to the VPC Endpoint Interface in the connectivity account. Yielding the following sequence.
+In situations where your private network connections ingress from another account, assuming your have a TGW route covering both VPC's, you can first use `vpc_endpoint_local`. That will create the infrastructure above, but gives as an output `vpc_endpoint_service`. You can then use that to create a VPC Endpoint Interface in your connectivity account that targets the created `vpc_endpoint_service`. Giving this service back as `vpc_endpoint_remote`, will remove the local VPC Endpoint Interface and point the DNS record to the VPC Endpoint Interface in the connectivity account. Yielding the following sequence.
 
 After having done the above with `vpc_endpoint_local = true`, create your VPC Endpoint Interface toward the output `vpc_endpoint_service`. Then modify the configuration to:
 
